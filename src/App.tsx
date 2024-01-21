@@ -3,9 +3,10 @@ import "./App.css";
 
 interface User {
   name: string;
-  email: string;
-  a: string;
-  b: string;
+  amount: string;
+  production: string;
+  expiry: string;
+  price: string;
 }
 
 const InputRow: React.FC<{ user: User; onChange: (user: User) => void }> = ({
@@ -20,7 +21,7 @@ const InputRow: React.FC<{ user: User; onChange: (user: User) => void }> = ({
     });
   };
   // total
-  const total = parseFloat(user.a) + parseFloat(user.b);
+  const total = parseFloat(user.price) + parseFloat(user.amount);
   return (
     <tr>
       <td>
@@ -34,28 +35,36 @@ const InputRow: React.FC<{ user: User; onChange: (user: User) => void }> = ({
       <td>
         <input
           type="text"
-          name="email"
-          value={user.email}
+          name="amount"
+          value={user.amount}
           onChange={valueChangeHandler}
         />
       </td>
       <td>
         <input
-          type="number"
-          name="a"
-          value={user.a}
+          type="month"
+          name="production"
+          value={user.production}
           onChange={valueChangeHandler}
         />
       </td>
       <td>
         <input
-          type="number"
-          name="b"
-          value={user.b}
+          type="month"
+          name="expiry"
+          value={user.expiry}
           onChange={valueChangeHandler}
         />
       </td>
       <td>{total}</td>
+      <td>
+        <input
+          type="number"
+          name="price"
+          value={user.price}
+          onChange={valueChangeHandler}
+        />
+      </td>
     </tr>
   );
 };
@@ -64,9 +73,10 @@ export default function App() {
   const [users, setUsers] = useState<User[]>([]);
   const [formValues, setFormValues] = useState<User>({
     name: "",
-    email: "",
-    a: "",
-    b: "",
+    amount: "",
+    production: "",
+    expiry: "",
+    price: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,20 +89,22 @@ export default function App() {
   // console.log(formValues);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { name, email, a, b } = formValues;
+    const { name, amount, production, expiry, price } = formValues;
     const newUser = {
       name,
-      email,
-      a,
-      b,
+      amount,
+      production,
+      expiry,
+      price,
     };
     // console.log(newUser);
     setUsers([...users, newUser]);
     setFormValues({
       name: "",
-      email: "",
-      a: "",
-      b: "",
+      amount: "",
+      production: "",
+      expiry: "",
+      price: "",
     });
   };
 
@@ -102,7 +114,7 @@ export default function App() {
     setUsers(updatedUsers);
   };
 
-  // console.log(users);
+  console.log(users);
 
   return (
     <>
@@ -110,11 +122,12 @@ export default function App() {
         <table>
           <thead>
             <tr>
-              <td>name</td>
-              <td>email</td>
-              <td>a</td>
-              <td>b</td>
-              <td>sum</td>
+              <td>Name</td>
+              <td>Quantity</td>
+              <td>Production</td>
+              <td>Expiry</td>
+              <td>Total</td>
+              <td>Price</td>
             </tr>
           </thead>
           <tbody>
@@ -137,25 +150,37 @@ export default function App() {
               <td>
                 <input
                   type="text"
-                  name="email"
+                  name="amount"
                   onChange={handleChange}
-                  value={formValues.email}
+                  value={formValues.amount}
                 />
               </td>
               <td>
                 <input
-                  type="number"
-                  name="a"
+                  type="month"
+                  name="production"
                   onChange={handleChange}
-                  value={formValues.a}
+                  value={formValues.production}
                 />
               </td>
               <td>
                 <input
-                  type="number"
-                  name="b"
+                  type="month"
+                  name="expiry"
                   onChange={handleChange}
-                  value={formValues.b}
+                  value={formValues.expiry}
+                />
+              </td>
+              <td>
+                <p>Total price</p>
+              </td>
+
+              <td>
+                <input
+                  type="number"
+                  name="price"
+                  onChange={handleChange}
+                  value={formValues.price}
                 />
               </td>
             </tr>
